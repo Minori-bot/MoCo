@@ -15,7 +15,7 @@ class ContrastiveLearningDatasets:
             'stl10': [0.24703223, 0.24348513, 0.26158784],
         }
 
-    def transform_pipline(self, size, s=1):
+    def transform_pipeline(self, size, s=1):
         data_transforms = transforms.Compose([
             transforms.RandomResizedCrop(size, scale=(0.2, 1.)),
             transforms.RandomApply([transforms.ColorJitter(0.4 * s, 0.4 * s, 0.4 * s, 0.1 * s)], p=0.8),
@@ -30,11 +30,11 @@ class ContrastiveLearningDatasets:
         valid_datasets = {
             'cifar10': lambda: datasets.CIFAR10(self.root_floder, train=True,
                                                 transform=TwoCropsTransform(transforms.Compose([
-                                                    self.transform_pipline(32),
+                                                    self.transform_pipeline(32),
                                                     transforms.Normalize(self.mean['cifar10'], self.std['cifar10'])])), download=True),
             'stl10': lambda: datasets.STL10(self.root_floder, split='train',
                                                 transform=TwoCropsTransform(transforms.Compose([
-                                                    self.transform_pipline(96),
+                                                    self.transform_pipeline(96),
                                                     transforms.Normalize(self.mean['stl10'], self.std['stl10'])])), download=True)
         }
 

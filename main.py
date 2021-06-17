@@ -15,3 +15,6 @@ for img, _ in loader:
     print(q)
     print(k)
     break
+
+
+
