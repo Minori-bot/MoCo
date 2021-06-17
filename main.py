@@ -1,11 +1,17 @@
-from encoder import ResNet50x2d, ResNet50, ResNet50x4d
+import torch
+import torchvision.transforms as transforms
+from torch.utils.data import DataLoader
+from datasets import ContrastiveLearningDatasets
 
-net1 = ResNet50x2d()
-net2 = ResNet50()
-net3 = ResNet50x4d()
+root_folder = '../data/cifar'
 
-print(net1)
-print()
-print(net2)
-print()
-print(net3)
+datasets = ContrastiveLearningDatasets(root_folder)
+data = datasets.get_datasets('cifar10')
+loader = DataLoader(data, batch_size=1)
+
+for img, _ in loader:
+    q, k = img[0], img[1]
+    print(q.shape, k.shape)
+    print(q)
+    print(k)
+    break
