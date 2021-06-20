@@ -28,16 +28,17 @@ class ResNetEncoder(models.resnet.ResNet):
 
         out = self.avgpool(out)
         out = torch.flatten(out, start_dim=1)
+        out = self.fc(out)
 
         return out
 
 class ResNet18(ResNetEncoder):
-    def __init__(self, cifar=True):
-        super(ResNet18, self).__init__(models.resnet.BasicBlock, [2, 2, 2, 2], cifar=cifar)
+    def __init__(self, cifar=True, **kwargs):
+        super(ResNet18, self).__init__(models.resnet.BasicBlock, [2, 2, 2, 2], cifar=cifar, **kwargs)
 
 class ResNet50(ResNetEncoder):
-    def __init__(self, cifar=True, hparams=None):
-        super(ResNet50, self).__init__(models.resnet.Bottleneck, [3, 4, 6, 3], cifar=cifar, hparams=hparams)
+    def __init__(self, cifar=True, hparams=None, **kwargs):
+        super(ResNet50, self).__init__(models.resnet.Bottleneck, [3, 4, 6, 3], cifar=cifar, hparams=hparams, **kwargs)
 
 class ResNet50x2d(ResNetEncoder):
     def __init__(self, cifar=True, hparams=None, **kwargs):

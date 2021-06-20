@@ -32,7 +32,7 @@ class ContrastiveLearningDatasets:
                                                 transform=TwoCropsTransform(transforms.Compose([
                                                     self.transform_pipeline(32),
                                                     transforms.Normalize(self.mean['cifar10'], self.std['cifar10'])])), download=True),
-            'stl10': lambda: datasets.STL10(self.root_floder, split='train',
+            'stl10': lambda: datasets.STL10(self.root_floder, split='unlabeled',
                                                 transform=TwoCropsTransform(transforms.Compose([
                                                     self.transform_pipeline(96),
                                                     transforms.Normalize(self.mean['stl10'], self.std['stl10'])])), download=True)
