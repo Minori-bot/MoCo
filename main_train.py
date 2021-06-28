@@ -24,7 +24,7 @@ parser.add_argument('--model', default='resnet50',
 
 # moco specific configs
 parser.add_argument('--moco-dim', type=int, default=128, help='feature dimension')
-parser.add_argument('--moco-k', type=int, default=65536, help='size fo queue, number of negative keys')
+parser.add_argument('--moco-k', type=int, default=4096, help='size fo queue, number of negative keys')
 parser.add_argument('--moco-m', type=float, default=0.999, help='momentum for key encoder')
 parser.add_argument('--moco-t', type=float, default=0.07, help='temperature in InfoNCE')
 
