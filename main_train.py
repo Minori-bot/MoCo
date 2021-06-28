@@ -96,7 +96,7 @@ def main():
         }, is_best=False, filename=os.path.join(DIR['CHECKPOINT'], 'checkpoint_{:03d}.pth.tar'.format(epoch)))
 
 def train(model, train_loader, optimizer, criterion, epoch, args):
-    epoch_loss = AverageMeter('Loss', ':.6f')
+    epoch_loss = AverageMeter('Loss', ':.2f')
     model.train()
     for i, (images, _) in enumerate(train_loader):
         if args.device == torch.device('cuda'):
