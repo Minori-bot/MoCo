@@ -49,7 +49,7 @@ def main():
     print('Using device {}'.format(args.device))
 
     print("=> creating model '{}'".format(args.model))
-    model = MoCo(args.model, args.moco_dim, args.moco_k, args.moco_m, args.moco_t, args.dataset=='cifar')
+    model = MoCo(args.model, args.moco_dim, args.moco_k, args.moco_m, args.moco_t, args.dataset == 'cifar')
     print(model)
     if args.device == torch.device('cuda'):
         model.cuda()
@@ -96,7 +96,7 @@ def main():
         }, is_best=False, filename=os.path.join(DIR['CHECKPOINT'], 'checkpoint_{:03d}.pth.tar'.format(epoch)))
 
 def train(model, train_loader, optimizer, criterion, epoch, args):
-    epoch_loss = AverageMeter('Loss', ':.2f')
+    epoch_loss = AverageMeter('Loss', ':.6f')
     model.train()
     for i, (images, _) in enumerate(train_loader):
         if args.device == torch.device('cuda'):
