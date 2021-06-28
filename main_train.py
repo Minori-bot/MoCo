@@ -66,9 +66,6 @@ def main():
     PATH = os.path.join(DIR, args.dataset)
     print("=> loading dataset in ''".format(PATH))
     dataset = datasets.ContrastiveLearningDatasets(root_folder=PATH)
-    if args.dataset == 'cifar':
-        train_data = dataset.get_datasets(args.dataset+'10')
-    else:
-        train_data = dataset.get_datasets(args.dataset+'10')
+    train_data = dataset.get_datasets(args.dataset+'10')
     train_loader = DataLoader(dataset=train_data, batch_size=args.batch_size, shuffle=True,
                               num_workers=args.workers, pin_memory=False, drop_last=True)
