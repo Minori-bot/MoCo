@@ -71,8 +71,6 @@ class MoCo(nn.Module):
 
         return logits, labels
 
-
-
     def _is_resnet(self, encoder):
         return encoder in self.resnet_list
 
