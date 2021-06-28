@@ -4,7 +4,7 @@ from model.encoder import ResNet50, ResNet18, ResNet50x2d, ResNet50x4d
 import torch.nn.functional as F
 
 class MoCo(nn.Module):
-    def __init__(self, encoder, dim=128, k=65536, momentum=0.999, temperature=0.07, cifar=False):
+    def __init__(self, encoder, dim=128, k=4096, momentum=0.999, temperature=0.07, cifar=False):
         super(MoCo, self).__init__()
         self.resnet_list = ['resnet18', 'resnet50', 'resnet50x2d', 'resnet50x4d']
         assert self._is_resnet(encoder), \

@@ -40,7 +40,9 @@ def main():
     if device == torch.device('cuda'):
         model.cuda()
 
-    criterion = nn.CrossEntropyLoss().cuda()
+    criterion = nn.CrossEntropyLoss()
+    if device == torch.device('cuda'):
+        criterion = criterion.cuda()
     optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum, weight_decay=args.wd)
 
     if args.checkpoint:
