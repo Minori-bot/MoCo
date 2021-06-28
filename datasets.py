@@ -1,6 +1,7 @@
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 from utils import GaussianBlur, TwoCropsTransform
+from torch.utils.data import DataLoader
 
 
 class ContrastiveLearningDatasets:
