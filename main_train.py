@@ -107,6 +107,7 @@ def main():
         }, is_best=False, filename=os.path.join(DIR['CHECKPOINT'], 'checkpoint_{:03d}.pth.tar'.format(epoch)))
 
     writer.close()
+    logging.info('training finished')
 
 def train(model, train_loader, optimizer, criterion, args):
     epoch_loss = AverageMeter('Loss', ':.6f')
