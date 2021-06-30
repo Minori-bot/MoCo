@@ -3,16 +3,18 @@ import math
 import os
 import shutil
 import torch
+import logging
+import tensorboardX
 import torch.nn as nn
 import torch.backends.cudnn as cudnn
 import datasets
 from torch.utils.data import DataLoader
 from model.MoCo import MoCo
-from utils import AverageMeter
+from utils import AverageMeter, accuracy
 
 DIR = {
     'DATA': '..\..\dataset',
-    'CHECKPOINT': '.\checkpoint'
+    'CHECKPOINT': '.\checkpoint',
 }
 
 for path in DIR.values():
@@ -33,7 +35,7 @@ parser.add_argument('--checkpoint', default=None, help='path to latest checkpoin
 parser.add_argument('--workers', type=int, default=0, help='Number of dataloader workers')
 parser.add_argument('--cos', action='store_true', help='using cosine lr schedule')
 parser.add_argument('--device', default=None, help='device for training')
-parser.add_argument('--model', default='resnet18',
+parser.add_argument('--model', default='resnet50',
                     help='model, (Options: resnet18, resnet50, resnet50x2d, resnet50x4d)')
 
 # moco specific configs
@@ -44,6 +46,9 @@ parser.add_argument('--moco-t', type=float, default=0.07, help='temperature in I
 
 def main():
     args = parser.parse_args()
+    writer = tensorboardX.SummaryWriter(comment='-' + args.dataset)
+    logging.basicConfig(level=logging.DEBUG,
+                        format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
 
     args.device = torch.device('cuda' if torch.cuda.is_available else 'cpu')
     print('Using device {}'.format(args.device))
@@ -86,7 +91,12 @@ def main():
     for epoch in range(args.start_epoch, args.epochs):
         adjust_learning_rate(optimizer, epoch, args)
 
-        train(model, train_loader, optimizer, criterion, epoch, args)
+        loss, top1, top5 = train(model, train_loader, optimizer, criterion, args)
+        logging.info('[Train] epoch: {}, {}, {}, {}'.format(epoch, loss, top1, top5))
+        writer.add_scalar("loss", loss.avg, global_step=epoch)
+        writer.add_scalar("top1", top1.avg, global_step=epoch)
+        writer.add_scalar("top5", top5.avg, global_step=epoch)
+        writer.add_scalar("lr", optimizer.param_groups[0]['lr'], global_step=epoch)
 
         save_checkpoint({
             'epoch': epoch + 1,
@@ -95,8 +105,12 @@ def main():
             'optimizer': optimizer.state_dict()
         }, is_best=False, filename=os.path.join(DIR['CHECKPOINT'], 'checkpoint_{:03d}.pth.tar'.format(epoch)))
 
-def train(model, train_loader, optimizer, criterion, epoch, args):
+    writer.close()
+
+def train(model, train_loader, optimizer, criterion, args):
     epoch_loss = AverageMeter('Loss', ':.6f')
+    top1 = AverageMeter('Acc@1', ':6.2f')
+    top5 = AverageMeter('Acc@5', ':6.2f')
     model.train()
     for i, (images, _) in enumerate(train_loader):
         if args.device == torch.device('cuda'):
@@ -104,12 +118,17 @@ def train(model, train_loader, optimizer, criterion, epoch, args):
             images[1] = images[1].cuda(non_blocking=True)
         output, target = model(images[0], images[1])
         loss = criterion(output, target)
+        acc1, acc5 = accuracy(output, target, topk=(1, 5))
+
+        epoch_loss.maintain(loss.item(), images[0].shape[0])
+        top1.maintain(acc1.item(), images[0].shape[0])
+        top5.maintain(acc5.item(), images[0].shape[0])
 
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        epoch_loss.maintain(loss.item(), images[0].shape[0])
-        print(epoch_loss)
+
+    return epoch_loss, top1, top5
 
 def save_checkpoint(state, is_best, filename):
     torch.save(state, filename)

@@ -1,4 +1,5 @@
 import random
+import torch
 from PIL import ImageFilter
 
 class TwoCropsTransform:
@@ -40,3 +41,16 @@ class AverageMeter:
     def __str__(self):
         fmtstr = '{name} ({avg' + self.fmt + '})'
         return fmtstr.format(**self.__dict__)
+
+def accuracy(output, target, topk=(1,)):
+    batch_size = output.shape[0]
+    maxk = max(topk)
+    _, pred = torch.topk(output, k=maxk, largest=True, sorted=True)
+    pred = pred.t()
+    correct = torch.eq(pred, target.view(1, -1).expand_as(pred))
+
+    res = []
+    for k in topk:
+        correct_k = torch.sum(correct[:k].any(dim=0).float())
+        res.append(correct_k * (100 / batch_size))
+    return res
