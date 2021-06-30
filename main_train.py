@@ -15,7 +15,8 @@ from utils import AverageMeter, accuracy
 DIR = {
     'DATA': '..\..\dataset',
     'CHECKPOINT': '.\checkpoint',
-    'LOG': '.\log'
+    'LOG': '.\log',
+    'WRITER': '.\writer'
 }
 
 for path in DIR.values():
@@ -47,7 +48,8 @@ parser.add_argument('--moco-t', type=float, default=0.07, help='temperature in I
 
 def main():
     args = parser.parse_args()
-    writer = tensorboardX.SummaryWriter(comment='-' + args.dataset)
+    writer = tensorboardX.SummaryWriter(os.path.join(DIR['WRITER'], 'train'),
+                                        filename_suffix='-' + args.dataset + '-' + args.model)
     logging.basicConfig(filename=os.path.join(DIR['LOG'], 'train.log'), level=logging.DEBUG,
                         format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
 
