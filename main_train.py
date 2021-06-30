@@ -15,6 +15,7 @@ from utils import AverageMeter, accuracy
 DIR = {
     'DATA': '..\..\dataset',
     'CHECKPOINT': '.\checkpoint',
+    'LOG': '.\log'
 }
 
 for path in DIR.values():
@@ -47,7 +48,7 @@ parser.add_argument('--moco-t', type=float, default=0.07, help='temperature in I
 def main():
     args = parser.parse_args()
     writer = tensorboardX.SummaryWriter(comment='-' + args.dataset)
-    logging.basicConfig(level=logging.DEBUG,
+    logging.basicConfig(filename=os.path.join(DIR['LOG'], 'train.log'), level=logging.DEBUG,
                         format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
 
     args.device = torch.device('cuda' if torch.cuda.is_available else 'cpu')
