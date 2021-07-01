@@ -8,7 +8,7 @@ import torchvision.datasets
 
 from torch.utils.data import DataLoader
 from model.encoder import get_model
-
+from utils import AverageMeter, accuracy
 
 
 DIR = {
@@ -145,16 +145,32 @@ def main():
 
         train(model, train_loader, optimizer, criterion, args)
 
-        test(model, test_loader, optimizer, criterion, args)
+        test(model, test_loader, criterion, args)
 
 def train(model, data_lodar, optimizer, criterion, args):
-
+    model.eval()
+    epoch_loss = AverageMeter('Loss', ':.6f')
+    top1 = AverageMeter('Acc@1', ':6.2f')
+    top5 = AverageMeter('Acc@5', ':6.2f')
     for i, (images, labels) in enumerate(data_lodar):
         if args.device == torch.device('cuda'):
             images, labels = images.cuda(non_blocking=True), labels.cuda(non_blocking=True)
-    pass
+            output = model(images)
+            loss = criterion(output, labels)
 
-def test(model, data_loader, optimizer, criterion, args):
+            acc1, acc5 = accuracy(output, labels, topk=(1, 5))
+            epoch_loss.maintain(loss.item(), output.shape[0])
+            top1.maintain(acc1, output.shape[0])
+            top5.maintain(acc5, output.shape[0])
+
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+
+            # print('[train] step {}, {}, {}, {}'.format(i, epoch_loss, top1, top5))
+
+
+def test(model, data_loader, criterion, args):
     pass
 
 def adjust_learning_rate(optimizer, epoch, args):
