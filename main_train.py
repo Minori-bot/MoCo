@@ -127,6 +127,7 @@ def train(model, train_loader, optimizer, criterion, args):
         epoch_loss.maintain(loss.item(), images[0].shape[0])
         top1.maintain(acc1.item(), images[0].shape[0])
         top5.maintain(acc5.item(), images[0].shape[0])
+        # logging.info('[Train] step: {}, {}, {}, {}'.format(i, epoch_loss, top1, top5))
 
         optimizer.zero_grad()
         loss.backward()

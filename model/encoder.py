@@ -49,3 +49,13 @@ class ResNet50x4d(ResNetEncoder):
     def __init__(self, cifar=True, hparams=None, **kwargs):
         kwargs['width_per_group'] = 4 * 64
         super(ResNet50x4d, self).__init__(models.resnet.Bottleneck, [3, 4, 6, 3], cifar=cifar, hparams=hparams, **kwargs)
+
+def get_model(name, cifar, num_classes):
+    if name == 'resnet18':
+        return ResNet18(cifar=cifar, num_classes=num_classes)
+    elif name == 'resnet50':
+        return ResNet50(cifar=cifar, num_classes=num_classes)
+    elif name == 'resnet50x2d':
+        return ResNet50x2d(cifar=cifar, num_classes=num_classes)
+    else:
+        return ResNet50x4d(cifar=cifar, num_classes=num_classes)
