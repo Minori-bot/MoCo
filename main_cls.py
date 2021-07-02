@@ -162,6 +162,7 @@ def main():
         test_writer.add_scalar('top5', test_top5.avg, global_step=epoch)
 
         is_best = test_top1.avg > best_acc1
+        best_acc1 = max(best_acc1, test_top1.avg)
         save_checkpoint({
             'epoch': epoch + 1,
             'model': args.model,
