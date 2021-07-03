@@ -89,7 +89,7 @@ We train encoder by using resnet18 and resnet50, with dataset CIFAR10 and STL10,
 
 This is the performance:
 
-|  Dataset  |  Architecture  |  Queue size  |  Feature dimensionality  |  Epochs  |  Top1 %  |  Top5 %  |
+|  Dataset  |  Architecture  |  Queue size  |  Feature dimensions  |  Epochs  |  Top1 %  |  Top5 %  |
 |  :----:  |  :----:  |  :----:  |  :----:  |  :----:  |  :----:  |  :----:  |
 | CIFAR10  | ResNet18 | 4096 | 128 | 500 | 81.06 | 99.13 |
 | CIFAR10  | ResNet50 | 4096 | 128 | 500 | 84.03 | 99.40 |
