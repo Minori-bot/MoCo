@@ -85,7 +85,7 @@ optional arguments:
 
 ## Performance
 
-We train encoder by using resnet18 and resnet50, with dataset cifar10 and stl10, optimizer SGD. And We freeze all parameters but fc layer of resent model to training a linear classifier evaluating our model.
+We train encoder by using resnet18 and resnet50, with dataset CIFAR10 and STL10, optimizer SGD. And We freeze all parameters but fc layer of resent model to training a linear classifier evaluating our model.
 
 This is the performance:
 
