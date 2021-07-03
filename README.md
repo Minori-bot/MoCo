@@ -13,6 +13,10 @@ $ pip install -r requirements.txt
 ## Usage
 
 ### Train
+```
+$ python main_train.py --model resnet18 --cos
+```
+
 
 ```
 main_train.py [-h] [--dataset DATASET] [--epochs EPOCHS]
@@ -52,6 +56,11 @@ optional arguments:
 ```
 
 ### Linear Evaluation
+
+```
+$ python main_cls.py --model resnet18 --lr 0.3
+```
+
 
 ```
 main_cls.py [-h] [--dataset DATASET] [--epochs N] [--start-epoch N]
