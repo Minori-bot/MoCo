@@ -1,7 +1,7 @@
 # MoCo
 A unofficial PyTorch implementation of [MoCo](https://arxiv.org/pdf/1911.05722.pdf).
 
-There are some difficult with official implementation, only using model ResNet18 and ResNet50 in this repo and training pretrained model on one v100 GPU.
+There are some difficult with official implementation, only using model ResNet18 and ResNet50 in this repo and training pretrained model on one v100 GPU, no Shuffling BN.
 
 ## Requirements
 
