@@ -58,7 +58,7 @@ optional arguments:
 ### Linear Evaluation
 
 ```
-$ python main_cls.py --model resnet18 --lr 0.3
+$ python main_cls.py --model resnet18 --lr 0.3 --pretrained PATH
 ```
 
 
